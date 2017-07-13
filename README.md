@@ -10,3 +10,5 @@ You may need to make a few modifications to the source code for your implementat
 I have included a ClientBase class that creates the HttpClient used to make all the rest calls, it also sets up the authentication
 
 You may have to edit this class depending on your security needs
+
+I use this when adding a new BAQ or when Epicor updates the services
