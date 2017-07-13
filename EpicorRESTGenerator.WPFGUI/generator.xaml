@@ -1,0 +1,31 @@
+﻿<Window x:Class="EpicorRESTGenerator.WPFGUI.generator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EpicorRESTGenerator.WPFGUI"
+        mc:Ignorable="d"
+        Title="Epicor Client Generator" Height="523.724" Width="536.444">
+    <Grid Margin="0,0,2,0">
+        <Label x:Name="serviceURLLabel" Content="Service URL:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="serviceURLTextBox" HorizontalAlignment="Left" Height="23" Margin="85,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345"/>
+        <Button x:Name="serviceGetButton" Content="Get Services" HorizontalAlignment="Left" Margin="435,18,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="serviceGetButton_Click" />
+        <ListBox x:Name="serviceListBox" HorizontalAlignment="Left" Height="205" Margin="10,49,0,0" VerticalAlignment="Top" Width="500" SelectionMode="Extended"/>
+        <Label x:Name="ERPProjectDirLabel" Content="ERP Project Directory:" HorizontalAlignment="Left" Margin="10,287,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="ERPProjectDirTextBox" HorizontalAlignment="Left" Height="23" Margin="139,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
+        <Label x:Name="ICEProjectDirLabel" Content="ICE Project Directory:" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="ICEProjectDirTextBox" HorizontalAlignment="Left" Height="23" Margin="139,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
+        <Button x:Name="generatButton" Content="Generate" HorizontalAlignment="Left" Margin="429,463,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="1.144,0.117" Click="generatButton_Click"/>
+        <Label x:Name="ERPProjectDirLabel_Copy" Content="ERP Project:" HorizontalAlignment="Left" Margin="10,343,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="ERPProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="139,343,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
+        <Label x:Name="ICEProjectDirLabel_Copy" Content="ICE Project:" HorizontalAlignment="Left" Margin="10,371,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="ICEProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="139,371,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
+        <Label x:Name="ERPProjectDirLabel_Copy1" Content="Epicor API URL:" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="EpicorAPIURLTextBox" HorizontalAlignment="Left" Height="23" Margin="139,259,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
+        <Label x:Name="ERPProjectDirLabel_Copy2" Content="Namespace:" HorizontalAlignment="Left" Margin="10,399,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="NamespaceTextBox" HorizontalAlignment="Left" Height="23" Margin="139,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
+        <Label x:Name="ERPProjectDirLabel_Copy3" Content="Base Class:" HorizontalAlignment="Left" Margin="10,427,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+        <TextBox x:Name="BaseClassTextBox" HorizontalAlignment="Left" Height="23" Margin="82,430,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="329"/>
+        <CheckBox x:Name="UseBaseClassCheckBox" Content="Use Base Class" HorizontalAlignment="Right" Margin="0,438,10,0" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
