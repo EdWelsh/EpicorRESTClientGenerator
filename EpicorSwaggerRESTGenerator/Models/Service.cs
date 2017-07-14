@@ -118,19 +118,19 @@ namespace EpicorRESTGenerator.Models
                             .Replace("[System.ComponentModel.DataAnnotations.Required]", "");
 
                         string codeFile = "";
-                        var filename = name + ".cs";
+                        var filename = service.href + ".cs";
 
                         var split = service.href.Split('.');
                         var codeDir = Path.GetDirectoryName(details.Project);
 
                         if (split[0].ToUpper() == "ICE")
                         {
-                            codeFile = codeDir + name + ".cs";
+                            codeFile = codeDir + service.href + ".cs";
                             addReference(details.Project, filename);
                         }
                         else
                         {
-                            codeFile = codeDir + name + ".cs";
+                            codeFile = codeDir + service.href + ".cs";
                             addReference(details.Project, filename);
                         }
                         File.WriteAllText(codeFile, code);
