@@ -5,27 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EpicorRESTGenerator.WPFGUI"
         mc:Ignorable="d"
-        Title="Epicor Client Generator" Height="523.724" Width="536.444">
+        Title="Epicor Client Generator" Height="516.224" Width="584.444">
     <Grid Margin="0,0,2,0">
-        <Label x:Name="serviceURLLabel" Content="Service URL:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="serviceURLTextBox" HorizontalAlignment="Left" Height="23" Margin="85,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345"/>
-        <Button x:Name="serviceGetButton" Content="Get Services" HorizontalAlignment="Left" Margin="435,18,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="serviceGetButton_Click" />
-        <ListBox x:Name="serviceListBox" HorizontalAlignment="Left" Height="205" Margin="10,49,0,0" VerticalAlignment="Top" Width="500" SelectionMode="Extended"/>
-        <Label x:Name="ERPProjectDirLabel" Content="ERP Project Directory:" HorizontalAlignment="Left" Margin="10,287,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="ERPProjectDirTextBox" HorizontalAlignment="Left" Height="23" Margin="139,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <Label x:Name="ICEProjectDirLabel" Content="ICE Project Directory:" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="ICEProjectDirTextBox" HorizontalAlignment="Left" Height="23" Margin="139,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <Button x:Name="generatButton" Content="Generate" HorizontalAlignment="Left" Margin="429,463,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="1.144,0.117" Click="generatButton_Click"/>
-        <Label x:Name="ERPProjectDirLabel_Copy" Content="ERP Project:" HorizontalAlignment="Left" Margin="10,343,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="ERPProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="139,343,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <Label x:Name="ICEProjectDirLabel_Copy" Content="ICE Project:" HorizontalAlignment="Left" Margin="10,371,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="ICEProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="139,371,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <Label x:Name="ERPProjectDirLabel_Copy1" Content="Epicor API URL:" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="EpicorAPIURLTextBox" HorizontalAlignment="Left" Height="23" Margin="139,259,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <Label x:Name="ERPProjectDirLabel_Copy2" Content="Namespace:" HorizontalAlignment="Left" Margin="10,399,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="NamespaceTextBox" HorizontalAlignment="Left" Height="23" Margin="139,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="371"/>
-        <Label x:Name="ERPProjectDirLabel_Copy3" Content="Base Class:" HorizontalAlignment="Left" Margin="10,427,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
-        <TextBox x:Name="BaseClassTextBox" HorizontalAlignment="Left" Height="23" Margin="82,430,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="329"/>
-        <CheckBox x:Name="UseBaseClassCheckBox" Content="Use Base Class" HorizontalAlignment="Right" Margin="0,438,10,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="serviceURLLabel" Content="Epicor URL:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Height="26" Width="74"/>
+        <TextBox x:Name="serviceURLTextBox" HorizontalAlignment="Left" Height="23" Margin="89,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Text="https://tmieapp10.tm.int/Development"/>
+        <Label x:Name="ERPProjectDirLabel_Copy2" Content="Namespace:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Height="26" Width="74"/>
+        <TextBox x:Name="NamespaceTextBox" HorizontalAlignment="Left" Height="23" Margin="89,36,0,0" TextWrapping="Wrap" Text="E10RestClient" VerticalAlignment="Top" Width="475"/>
+        <Label x:Name="ERPProjectDirLabel_Copy3" Content="Base Class:" HorizontalAlignment="Left" Margin="17,64,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Height="26" Width="67"/>
+        <TextBox x:Name="BaseClassTextBox" HorizontalAlignment="Left" Height="23" Margin="89,64,0,0" TextWrapping="Wrap" Text="TMIBaseClass" VerticalAlignment="Top" Width="475"/>
+        <CheckBox x:Name="UseBaseClassCheckBox" Content="Use Base Class" HorizontalAlignment="Right" Margin="0,92,130,0" VerticalAlignment="Top" IsChecked="True" Height="15" Width="97"/>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="360" Margin="10,117,0,0" VerticalAlignment="Top" Width="554" IsEnabled="False" SelectionChanged="OnTabItemChanged">
+            <TabItem Header="ERP">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="72*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="454*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="ERPAPIURLServiceLabel" Content="Services URL:" HorizontalAlignment="Left" Margin="8,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="ERPAPIURLServiceTextBox" HorizontalAlignment="Left" Height="23" Margin="10,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="344" Text="" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <Button x:Name="GetERPServicesButton" Content="Get ERP Services" HorizontalAlignment="Left" Margin="347,9,0,0" VerticalAlignment="Top" Width="97" Height="23" Grid.Column="3" Click="GetERPServicesButton_Click" />
+                    <ListBox x:Name="ERPServiceListBox" HorizontalAlignment="Left" Height="205" Margin="8,40,0,0" VerticalAlignment="Top" Width="529" SelectionMode="Extended" Grid.ColumnSpan="4" SelectionChanged="ServiceListBox_SelectionChanged"/>
+                    <Label x:Name="ERPProjectDirLabel" Content="ERP Project:" HorizontalAlignment="Left" Margin="8,278,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="ERPProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="10,278,0,0" TextWrapping="Wrap" Text="F:\TMI.RestClients\E10RestClientCode\E10RestClient\E10RestClient.csproj" VerticalAlignment="Top" Width="448" Grid.Column="2" Grid.ColumnSpan="2"/>
+                    <Label x:Name="ERPAPIURLLabel" Content="API's URL:" HorizontalAlignment="Left" Margin="8,250,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237"/>
+                    <TextBox x:Name="ERPAPIURLTextBox" HorizontalAlignment="Left" Height="23" Margin="10,250,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="448" Grid.Column="2" Grid.ColumnSpan="2"/>
+                    <Button x:Name="GeneratERPButton" Content="Generate ERP" HorizontalAlignment="Left" Margin="343,306,0,6" Width="101" RenderTransformOrigin="1.144,0.117" Grid.Column="3" Click="GeneratERPButton_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="ICE">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="19*"/>
+                        <ColumnDefinition Width="107*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="ICEAPIURLServiceLabel" Content="Services URL:" HorizontalAlignment="Left" Margin="8,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="ICEAPIURLServiceTextBox" HorizontalAlignment="Left" Height="23" Margin="72.5,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="344" Text="" Grid.ColumnSpan="2" Grid.Column="1"/>
+                    <Button x:Name="GetICEServicesButton" Content="Get ICE Services" HorizontalAlignment="Left" Margin="347.287,9,0,0" VerticalAlignment="Top" Width="96" Height="23" Grid.Column="2" Click="GetICEServicesButton_Click" />
+                    <ListBox x:Name="ICEServiceListBox" HorizontalAlignment="Left" Height="205" Margin="8,40,0,0" VerticalAlignment="Top" Width="531" SelectionMode="Extended" Grid.ColumnSpan="3" SelectionChanged="ServiceListBox_SelectionChanged"/>
+                    <Label x:Name="ICEProjectDirLabel" Content="ICE Project:" HorizontalAlignment="Left" Margin="8,278,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="ICEProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="73,278,0,0" TextWrapping="Wrap" Text="F:\TMI.RestClients\E10RestClientCode\E10RestClient.ICE\E10RestClient.ICE.csproj" VerticalAlignment="Top" Width="451" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Label x:Name="ICEAPIURLLabel" Content="API's URL:" HorizontalAlignment="Left" Margin="8,250,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="ICEAPIURLTextBox" HorizontalAlignment="Left" Height="23" Margin="73,250,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="451" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Button x:Name="GeneratICEButton" Content="Generate ICE" HorizontalAlignment="Left" Margin="343.287,306,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="1.144,0.117" Grid.Column="2" Click="GeneratICEButton_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="BAQ">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="43*"/>
+                        <ColumnDefinition Width="428*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="BAQAPIURLServiceLabel" Content="Services URL:" HorizontalAlignment="Left" Margin="8,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="BAQAPIURLServiceTextBox" HorizontalAlignment="Left" Height="23" Margin="39.5,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="344" Text="" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <Button x:Name="GetBAQServicesButton" Content="Get BAQ Services" HorizontalAlignment="Left" Margin="340.38,9,0,0" VerticalAlignment="Top" Width="103" Height="23" Grid.Column="3" Click="GetBAQServicesButton_Click" />
+                    <ListBox x:Name="BAQServiceListBox" HorizontalAlignment="Left" Height="205" Margin="8,40,0,0" VerticalAlignment="Top" Width="530" SelectionMode="Extended" Grid.ColumnSpan="4" SelectionChanged="ServiceListBox_SelectionChanged"/>
+                    <Label x:Name="BAQProjectDirLabel" Content="BAQ Project:" HorizontalAlignment="Left" Margin="8,278,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="BAQProjectTextBox" HorizontalAlignment="Left" Height="23" Margin="39.38,278,0,0" TextWrapping="Wrap" Text="F:\TMI.RestClients\E10RestClientCode\E10RestClient.BAQ\E10RestClient.BAQ.csproj" VerticalAlignment="Top" Width="451" Grid.Column="2" Grid.ColumnSpan="2"/>
+                    <Label x:Name="BAQAPIURLLabel" Content="API's URL:" HorizontalAlignment="Left" Margin="8,250,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.542,2.237" Grid.ColumnSpan="3"/>
+                    <TextBox x:Name="BAQAPIURLTextBox" HorizontalAlignment="Left" Height="23" Margin="39.38,250,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="451" Grid.Column="2" Grid.ColumnSpan="2"/>
+                    <Button x:Name="GeneratBAQButton" Content="Generate BAQ" HorizontalAlignment="Left" Margin="343.38,306,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="1.144,0.117" Grid.Column="3" Click="GeneratBAQButton_Click"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="CheckService" Content="Check" HorizontalAlignment="Left" Margin="489,92,0,0" VerticalAlignment="Top" Width="75" Click="CheckService_Click"/>
     </Grid>
 </Window>

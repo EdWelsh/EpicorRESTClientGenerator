@@ -26,63 +26,126 @@ namespace EpicorRESTGenerator.WPFGUI
             InitializeComponent();
 
         }
-
-        private void serviceGetButton_Click(object sender, RoutedEventArgs e)
+        private void CheckService_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(serviceURLTextBox.Text))
             {
-                MessageBox.Show("Service URL is Required");
+                MessageBox.Show("Epicor API URL is Required");
+                return;
             }
-            services = service.getServices(serviceURLTextBox.Text);
-            serviceListBox.ItemsSource = services.workspace.collection.Select(o => o.href);
+
+            MessageBoxResult result = MessageBox.Show("Do you want to generate a client for oData? Selecting No will default to custom methods", "", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ERPAPIURLTextBox.Text = serviceURLTextBox.Text + "/api/swagger/v1/odata/";
+                    ICEAPIURLTextBox.Text = serviceURLTextBox.Text + "/api/swagger/v1/odata/";
+                    break;
+                case MessageBoxResult.No:
+                    ERPAPIURLTextBox.Text = serviceURLTextBox.Text + "/api/swagger/v1/methods/";
+                    ICEAPIURLTextBox.Text = serviceURLTextBox.Text + "/api/swagger/v1/methods/";
+                    break;
+            }
+            BAQAPIURLTextBox.Text = serviceURLTextBox.Text + "/api/swagger/v1/baq/";
+
+            ERPAPIURLServiceTextBox.Text = serviceURLTextBox.Text + "/api/v1/";
+            ICEAPIURLServiceTextBox.Text = serviceURLTextBox.Text + "/api/v1/";
+            BAQAPIURLServiceTextBox.Text = serviceURLTextBox.Text + "/api/v1/BaqSvc/";
+
+
+
+            tabControl.IsEnabled = true;
         }
 
-        private async void generatButton_Click(object sender, RoutedEventArgs e)
+
+        private void GetBAQServicesButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isValid(EpicorAPIURLTextBox)) { MessageBox.Show("Please provide a URL for the Epicor API", "");  return; }
-            if (isValid(ERPProjectDirTextBox)) { MessageBox.Show("Please provide the ERP project directory", "");  return; }
-            if (isValid(ICEProjectDirTextBox)) { MessageBox.Show("Please provide the ICE project directory", "");  return; }
-            if (isValid(ERPProjectTextBox)) { MessageBox.Show("Please provide the ERP project", "");  return; }
-            if (isValid(ICEProjectTextBox)) { MessageBox.Show("Please provide the ICE project", "");  return; }
+            PopulateService(BAQAPIURLServiceTextBox, BAQServiceListBox, "");
+        }
+        private void GetICEServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateService(ICEAPIURLServiceTextBox, ICEServiceListBox, "ICE");
+        }
+        private void GetERPServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateService(ERPAPIURLServiceTextBox, ERPServiceListBox, "ERP");
+        }
 
-            if (serviceListBox.SelectedItems.Count == 0)
+
+        private void GeneratERPButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isValid(ERPAPIURLServiceTextBox)) { MessageBox.Show("Please provide a services URL for the ERP Services", ""); return; }
+            if (isValid(ERPProjectTextBox)) { MessageBox.Show("Please provide the ERP project directory", ""); return; }
+            if (isValid(ERPAPIURLTextBox)) { MessageBox.Show("Please provide the ERP API URL", ""); return; }
+            if (ERPServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
+            IsEnabled = false;
+            var r = generate(ERPAPIURLTextBox.Text, ERPProjectTextBox.Text).Result;
+            IsEnabled = true;
+        }
+        private void GeneratICEButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isValid(ICEAPIURLServiceTextBox)) { MessageBox.Show("Please provide a services URL for the ICE Services", ""); return; }
+            if (isValid(ICEProjectTextBox)) { MessageBox.Show("Please provide the ICE project directory", ""); return; }
+            if (isValid(ICEAPIURLTextBox)) { MessageBox.Show("Please provide the ICE API URL", ""); return; }
+            if (ICEServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
+
+            IsEnabled = false;
+            var r = generate(ICEAPIURLTextBox.Text, ICEProjectTextBox.Text).Result;
+            IsEnabled = true;
+        }
+        private void GeneratBAQButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isValid(BAQAPIURLServiceTextBox)) { MessageBox.Show("Please provide a services URL for the BAQ Services", ""); return; }
+            if (isValid(BAQProjectTextBox)) { MessageBox.Show("Please provide the BAQ project directory", ""); return; }
+            if (isValid(BAQAPIURLTextBox)) { MessageBox.Show("Please provide the BAQ API URL", ""); return; }
+            if (BAQServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
+            IsEnabled = false;
+            var r = generate(BAQAPIURLTextBox.Text, BAQProjectTextBox.Text).Result;
+            IsEnabled = true;
+        }
+
+
+        private void PopulateService(TextBox textBox, ListBox listBox, string type)
+        {
+            if (string.IsNullOrEmpty(textBox.Text))
             {
-                MessageBoxResult result = MessageBox.Show("No services were selected, would you like to generate code for ALL services?", "", MessageBoxButton.YesNo);
-                switch (result)
-                {
-                    case MessageBoxResult.No:
-                        MessageBox.Show("Please select the service you wish to generate a client for!", "");
-                        return;
-                }
+                MessageBox.Show("Services URL is Required");
             }
-
-            this.IsEnabled = false;
-
+            services = service.getServices(textBox.Text);
+            services.workspace.collection = services.workspace.collection.Where(o => o.href.ToUpper().StartsWith(type)).ToArray<serviceWorkspaceCollection>();
+            listBox.ItemsSource = services.workspace.collection.Select(o => o.href);
+        }
+        private bool isValid(TextBox textBox)
+        {
+            return String.IsNullOrEmpty(textBox.Text);
+        }
+        private async Task<bool> generate(string url, string proj)
+        {
             EpicorDetails details = new EpicorDetails();
             details.BaseClass = BaseClassTextBox.Text;
-            details.EpicorAPIUrl = EpicorAPIURLTextBox.Text;
-            details.EpicorERPCodeDir = ERPProjectDirTextBox.Text;
-            details.EpicorERPProject = ERPProjectTextBox.Text;
-            details.EpicorICECodeDir = ICEProjectDirTextBox.Text;
-            details.EpicorICEProject = ICEProjectTextBox.Text;
+            details.APIURL = url;
+            details.Project = proj;
             details.Namespace = NamespaceTextBox.Text;
             details.useBaseClass = (bool)UseBaseClassCheckBox.IsChecked;
-
-            
-            services.workspace.collection = services.workspace.collection.Where(o => serviceListBox.SelectedItems.Contains(o.href)).ToArray<serviceWorkspaceCollection>();
 
             var test = await service.generateCode(services, details);
             if (test)
                 MessageBox.Show("Success");
             else
                 MessageBox.Show("Somehing went wrong");
-
-            this.IsEnabled = true;
+            return true;
+        }
+        private void OnTabItemChanged(object sender, SelectionChangedEventArgs e)
+        {
+            services = null;
+            ERPServiceListBox.ItemsSource = null;
+            ICEServiceListBox.ItemsSource = null;
+            BAQServiceListBox.ItemsSource = null;
         }
 
-        private bool isValid(TextBox textBox)
+        private void ServiceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            return String.IsNullOrEmpty(textBox.Text);
+            e.Handled = true;
         }
     }
 }

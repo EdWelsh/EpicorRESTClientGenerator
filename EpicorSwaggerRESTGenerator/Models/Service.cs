@@ -68,20 +68,26 @@ namespace EpicorRESTGenerator.Models
             {
                 foreach (var service in services.workspace.collection)
                 {
-                    var name = service.href;
+                    var name = service.href.Replace(".", "").Replace("-", "");
                     try
                     {
-                        string x = client.DownloadString(details.EpicorAPIUrl + service.href);
+                        string x = client.DownloadString(details.APIURL + name);
 
                         dynamic jsonObj = JsonConvert.DeserializeObject(x);
-                        foreach (var j in jsonObj["paths"])
+                        if (!details.APIURL.Contains("baq"))
                         {
-                            j.First["post"]["operationId"] = j.Name.Replace(@"\", "").Replace("/", "");
+                            foreach (var j in jsonObj["paths"])
+                            {
+                                j.First["post"]["operationId"] = j.Name.Replace(@"\", "").Replace("/", "");
+                            }
                         }
+
+
+
                         string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
 
                         var document = await SwaggerDocument.FromJsonAsync(output);
-                        var settings = new SwaggerToCSharpClientGeneratorSettings() { ClassName = service.href.Replace(".", ""), OperationNameGenerator = new SingleClientFromOperationIdOperationNameGenerator() };
+                        var settings = new SwaggerToCSharpClientGeneratorSettings() { ClassName = name, OperationNameGenerator = new SingleClientFromOperationIdOperationNameGenerator() };
                         var generator = new SwaggerToCSharpClientGenerator(document, settings);
                         if (details.useBaseClass) generator.Settings.ClientBaseClass = details.BaseClass;
                         generator.Settings.UseHttpClientCreationMethod = true;
@@ -91,7 +97,7 @@ namespace EpicorRESTGenerator.Models
                         var code = generator.GenerateFile();
                         code = code
                             //need to replace with my actual namespace
-                            .Replace("MyNamespace", details.Namespace + "." + service.href)
+                            .Replace("MyNamespace", details.Namespace + "." + name)
                             //Had an error so added but I dont think this replacement is needed for all scenarios, maybe add flag in details later
                             .Replace("var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);", "var client_ = CreateHttpClientAsync(cancellationToken);")
                             //no need
@@ -108,22 +114,24 @@ namespace EpicorRESTGenerator.Models
                             .Replace("private System.Collections.Generic.IDictionary<string, string> _additionalProperties = new System.Collections.Generic.Dictionary<string, string>();", "private System.Collections.Generic.IDictionary<string, JToken> _additionalProperties = new System.Collections.Generic.Dictionary<string, JToken>();")
                             .Replace("public System.Collections.Generic.IDictionary<string, string> AdditionalProperties", " public System.Collections.Generic.IDictionary<string, JToken> AdditionalProperties")
                             //I dont like the required attribute, changed to allow nulls
-                            .Replace(", Required = Newtonsoft.Json.Required.Always)]", ", Required = Newtonsoft.Json.Required.AllowNull)]");
+                            .Replace(", Required = Newtonsoft.Json.Required.Always)]", ", Required = Newtonsoft.Json.Required.AllowNull)]")
+                            .Replace("[System.ComponentModel.DataAnnotations.Required]", "");
 
                         string codeFile = "";
-                        var filename = service.href + ".cs";
+                        var filename = name + ".cs";
 
-                        var split = service.href.Split('.');
+                        var split = name.Split('.');
+                        var codeDir = Path.GetDirectoryName(details.Project);
 
                         if (split[0].ToUpper() == "ICE")
                         {
-                            codeFile = details.EpicorICECodeDir + service.href + ".cs";
-                            addReference(details.EpicorICECodeDir + details.EpicorICEProject, filename);
+                            codeFile = codeDir + name + ".cs";
+                            addReference(details.Project, filename);
                         }
                         else
                         {
-                            codeFile = details.EpicorERPCodeDir + service.href + ".cs";
-                            addReference(details.EpicorERPCodeDir + details.EpicorERPProject, filename);
+                            codeFile = codeDir + name + ".cs";
+                            addReference(details.Project, filename);
                         }
                         File.WriteAllText(codeFile, code);
                     }
@@ -300,10 +308,7 @@ namespace EpicorRESTGenerator.Models
         public string Namespace { get; set; }
         public bool useBaseClass { get; set; }
         public string BaseClass { get; set; }
-        public string EpicorAPIUrl { get; set; }
-        public string EpicorERPCodeDir { get; set; }
-        public string EpicorICECodeDir { get; set; }
-        public string EpicorERPProject { get; set; }
-        public string EpicorICEProject { get; set; }
+        public string APIURL { get; set; }
+        public string Project { get; set; }
     }
 }
