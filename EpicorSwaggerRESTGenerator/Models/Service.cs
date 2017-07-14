@@ -71,7 +71,7 @@ namespace EpicorRESTGenerator.Models
                     var name = service.href.Replace(".", "").Replace("-", "");
                     try
                     {
-                        string x = client.DownloadString(details.APIURL + name);
+                        string x = client.DownloadString(details.APIURL + service.href);
 
                         dynamic jsonObj = JsonConvert.DeserializeObject(x);
                         if (!details.APIURL.Contains("baq"))
@@ -120,7 +120,7 @@ namespace EpicorRESTGenerator.Models
                         string codeFile = "";
                         var filename = name + ".cs";
 
-                        var split = name.Split('.');
+                        var split = service.href.Split('.');
                         var codeDir = Path.GetDirectoryName(details.Project);
 
                         if (split[0].ToUpper() == "ICE")
