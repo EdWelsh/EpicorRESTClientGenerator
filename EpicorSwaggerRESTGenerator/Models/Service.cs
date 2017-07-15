@@ -82,8 +82,6 @@ namespace EpicorRESTGenerator.Models
                             }
                         }
 
-
-
                         string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
 
                         var document = await SwaggerDocument.FromJsonAsync(output);
@@ -117,23 +115,8 @@ namespace EpicorRESTGenerator.Models
                             .Replace(", Required = Newtonsoft.Json.Required.Always)]", ", Required = Newtonsoft.Json.Required.AllowNull)]")
                             .Replace("[System.ComponentModel.DataAnnotations.Required]", "");
 
-                        string codeFile = "";
-                        var filename = service.href + ".cs";
-
-                        var split = service.href.Split('.');
-                        var codeDir = Path.GetDirectoryName(details.Project);
-
-                        if (split[0].ToUpper() == "ICE")
-                        {
-                            codeFile = codeDir + service.href + ".cs";
-                            addReference(details.Project, filename);
-                        }
-                        else
-                        {
-                            codeFile = codeDir + service.href + ".cs";
-                            addReference(details.Project, filename);
-                        }
-                        File.WriteAllText(codeFile, code);
+                        addReference(details.Project, service.href + ".cs");
+                        File.WriteAllText(Path.GetDirectoryName(details.Project) + "\\" + service.href + ".cs", code);
                     }
                     catch (Exception ex)
                     {

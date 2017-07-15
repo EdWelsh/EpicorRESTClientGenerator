@@ -79,6 +79,7 @@ namespace EpicorRESTGenerator.WPFGUI
             if (isValid(ERPAPIURLTextBox)) { MessageBox.Show("Please provide the ERP API URL", ""); return; }
             if (ERPServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
             IsEnabled = false;
+            services.workspace.collection = services.workspace.collection.Where(o => ERPServiceListBox.SelectedItems.Contains(o.href)).ToArray();
             var r = generate(ERPAPIURLTextBox.Text, ERPProjectTextBox.Text).Result;
             IsEnabled = true;
         }
@@ -88,8 +89,8 @@ namespace EpicorRESTGenerator.WPFGUI
             if (isValid(ICEProjectTextBox)) { MessageBox.Show("Please provide the ICE project directory", ""); return; }
             if (isValid(ICEAPIURLTextBox)) { MessageBox.Show("Please provide the ICE API URL", ""); return; }
             if (ICEServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
-
             IsEnabled = false;
+            services.workspace.collection = services.workspace.collection.Where(o => ICEServiceListBox.SelectedItems.Contains(o.href)).ToArray();
             var r = generate(ICEAPIURLTextBox.Text, ICEProjectTextBox.Text).Result;
             IsEnabled = true;
         }
@@ -100,6 +101,7 @@ namespace EpicorRESTGenerator.WPFGUI
             if (isValid(BAQAPIURLTextBox)) { MessageBox.Show("Please provide the BAQ API URL", ""); return; }
             if (BAQServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
             IsEnabled = false;
+            services.workspace.collection = services.workspace.collection.Where(o => BAQServiceListBox.SelectedItems.Contains(o.href)).ToArray();
             var r = generate(BAQAPIURLTextBox.Text, BAQProjectTextBox.Text).Result;
             IsEnabled = true;
         }
