@@ -95,7 +95,7 @@ namespace EpicorRESTGenerator.Models
                         var code = generator.GenerateFile();
                         code = code
                             //need to replace with my actual namespace
-                            .Replace("MyNamespace", details.Namespace + "." + name)
+                            .Replace("MyNamespace", details.Namespace + "." + service.href.Replace("-", ""))
                             //Had an error so added but I dont think this replacement is needed for all scenarios, maybe add flag in details later
                             .Replace("var client_ = await CreateHttpClientAsync(cancellationToken).ConfigureAwait(false);", "var client_ = CreateHttpClientAsync(cancellationToken);")
                             //no need
