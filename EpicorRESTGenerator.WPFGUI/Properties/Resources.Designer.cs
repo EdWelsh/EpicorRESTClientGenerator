@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EpicorRESTGenerator.WPFGUI.Properties
+namespace EpicorSwaggerRESTGenerator.WPFGUI.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace EpicorRESTGenerator.WPFGUI.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EpicorRESTGenerator.WPFGUI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EpicorSwaggerRESTGenerator.WPFGUI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

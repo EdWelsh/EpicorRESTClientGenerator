@@ -1,6 +1,8 @@
-﻿using EpicorRESTGenerator.Models;
+﻿using EpicorSwaggerRESTGenerator.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace EpicorRESTGenerator.WPFGUI
+namespace EpicorSwaggerRESTGenerator.WPFGUI
 {
     /// <summary>
     /// Interaction logic for generator.xaml
@@ -32,6 +34,19 @@ namespace EpicorRESTGenerator.WPFGUI
             {
                 MessageBox.Show("Epicor API URL is Required");
                 return;
+            }
+            if((bool)useCredentialsCheckBox.IsChecked)
+            {
+                if(string.IsNullOrEmpty(usernameTextBox.Text))
+                {
+                    MessageBox.Show("Username is required");
+                    return;
+                }
+                if(string.IsNullOrEmpty(passwordTextBox.Text))
+                {
+                    MessageBox.Show("Password is required");
+                    return;
+                }  
             }
 
             MessageBoxResult result = MessageBox.Show("Do you want to generate a client for oData? Selecting No will default to custom methods", "", MessageBoxButton.YesNo);
@@ -113,7 +128,15 @@ namespace EpicorRESTGenerator.WPFGUI
             {
                 MessageBox.Show("Services URL is Required");
             }
-            services = service.getServices(textBox.Text);
+
+            EpicorDetails details = new EpicorDetails();
+            if((bool)useCredentialsCheckBox.IsChecked)
+            {
+                details.Username = usernameTextBox.Text;
+                details.Password = passwordTextBox.Text;
+            }
+
+            services = service.getServices(textBox.Text, details);
             services.workspace.collection = services.workspace.collection.Where(o => o.href.ToUpper().StartsWith(type)).ToArray<serviceWorkspaceCollection>();
             listBox.ItemsSource = services.workspace.collection.Select(o => o.href);
         }
@@ -148,6 +171,50 @@ namespace EpicorRESTGenerator.WPFGUI
         private void ServiceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void useCredentialsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            usernameTextBox.IsEnabled = true;
+            passwordTextBox.IsEnabled = true;
+        }
+        private void useCredentialsCheckBox_UnChecked(object sender, RoutedEventArgs e)
+        {
+            usernameTextBox.IsEnabled = false;
+            passwordTextBox.IsEnabled = false;
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            richTextBox.Document = new FlowDocument();
+
+            OpenFileDialog openFile1 = new OpenFileDialog();
+            openFile1.DefaultExt = "*.cs";
+            openFile1.Filter = "CS Files|*.cs";
+
+            var hasValue = openFile1.ShowDialog().HasValue;
+            if (hasValue)
+            {
+                Paragraph paragraph = new Paragraph();
+                paragraph.Inlines.Add(System.IO.File.ReadAllText(openFile1.FileName));
+                FlowDocument document = new FlowDocument(paragraph);
+                richTextBox.Document = document;
+            }
+        }
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.DefaultExt = "*.cs";
+            dialog.Filter = "CS Files|*.cs";
+
+            if (dialog.ShowDialog() == true)
+            {
+                TextRange t = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+                FileStream file = new FileStream(dialog.FileName, FileMode.Create);
+                t.Save(file, System.Windows.DataFormats.Text);
+                file.Close();
+                //File.WriteAllText(dialog.FileName, richTextBox.Document.);
+            }
         }
     }
 }

@@ -70,7 +70,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientBase.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\EpicorDetails.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\serviceWorkspace.cs" />
+    <Compile Include="Models\serviceWorkspaceCollection.cs" />
+    <Compile Include="Models\title.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

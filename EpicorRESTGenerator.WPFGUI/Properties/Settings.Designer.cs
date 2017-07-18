@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EpicorRESTGenerator.WPFGUI.Properties
+namespace EpicorSwaggerRESTGenerator.WPFGUI.Properties
 {
 
 

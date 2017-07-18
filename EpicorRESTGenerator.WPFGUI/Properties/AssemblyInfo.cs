@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EpicorRESTGenerator.WPFGUI")]
+[assembly: AssemblyTitle("EpicorSwaggerRESTGenerator.WPFGUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EpicorRESTGenerator.WPFGUI")]
+[assembly: AssemblyProduct("EpicorSwaggerRESTGenerator.WPFGUI")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

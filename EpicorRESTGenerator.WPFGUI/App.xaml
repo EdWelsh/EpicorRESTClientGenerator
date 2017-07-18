@@ -1,7 +1,7 @@
-﻿<Application x:Class="EpicorRESTGenerator.WPFGUI.App"
+﻿<Application x:Class="EpicorSwaggerRESTGenerator.WPFGUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:EpicorRESTGenerator.WPFGUI"
+             xmlns:local="clr-namespace:EpicorSwaggerRESTGenerator.WPFGUI"
              StartupUri="generator.xaml">
     <Application.Resources>
          

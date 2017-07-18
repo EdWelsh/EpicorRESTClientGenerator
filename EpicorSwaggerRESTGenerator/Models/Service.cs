@@ -10,7 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EpicorRESTGenerator.Models
+namespace EpicorSwaggerRESTGenerator.Models
 {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.w3.org/2007/app")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://www.w3.org/2007/app", IsNullable = false)]
@@ -47,9 +47,9 @@ namespace EpicorRESTGenerator.Models
             }
         }
 
-        public static service getServices(string serviceURL)
+        public static service getServices(string serviceURL, EpicorDetails details)
         {
-            using (WebClient client = getWebClient())
+            using (WebClient client = Client.getWebClient(string.IsNullOrEmpty(details.Username)?"":details.Username, string.IsNullOrEmpty(details.Password) ? "" : details.Password))
             {
                 service services = new service();
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(service));
@@ -64,7 +64,7 @@ namespace EpicorRESTGenerator.Models
 
         public static async Task<bool> generateCode(service services, EpicorDetails details)
         {
-            using (WebClient client = getWebClient())
+            using (WebClient client = Client.getWebClient(string.IsNullOrEmpty(details.Username) ? "" : details.Username, string.IsNullOrEmpty(details.Password) ? "" : details.Password))
             {
                 foreach (var service in services.workspace.collection)
                 {
@@ -129,14 +129,6 @@ namespace EpicorRESTGenerator.Models
             }
             return true;
         }
-
-        private static WebClient getWebClient()
-        {
-            WebClient client = new WebClient();
-            ServicePointManager.ServerCertificateValidationCallback += (senderC, cert, chain, sslPolicyErrors) => true;
-            client.UseDefaultCredentials = true;
-            return client;
-        }
         private static void addReference(string projectFile, string filename)
         {
             using (var collection = new Microsoft.Build.Evaluation.ProjectCollection())
@@ -153,145 +145,5 @@ namespace EpicorRESTGenerator.Models
                 collection.UnloadProject(project);
             }
         }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.w3.org/2007/app")]
-    public partial class serviceWorkspace
-    {
-
-        private title titleField;
-
-        private serviceWorkspaceCollection[] collectionField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace = "http://www.w3.org/2005/Atom")]
-        public title title
-        {
-            get
-            {
-                return this.titleField;
-            }
-            set
-            {
-                this.titleField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("collection")]
-        public serviceWorkspaceCollection[] collection
-        {
-            get
-            {
-                return this.collectionField;
-            }
-            set
-            {
-                this.collectionField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.w3.org/2005/Atom")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://www.w3.org/2005/Atom", IsNullable = false)]
-    public partial class title
-    {
-
-        private string typeField;
-
-        private string valueField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string type
-        {
-            get
-            {
-                return this.typeField;
-            }
-            set
-            {
-                this.typeField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string Value
-        {
-            get
-            {
-                return this.valueField;
-            }
-            set
-            {
-                this.valueField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.w3.org/2007/app")]
-    public partial class serviceWorkspaceCollection
-    {
-
-        private title titleField;
-
-        private string[] textField;
-
-        private string hrefField;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace = "http://www.w3.org/2005/Atom")]
-        public title title
-        {
-            get
-            {
-                return this.titleField;
-            }
-            set
-            {
-                this.titleField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
-        public string[] Text
-        {
-            get
-            {
-                return this.textField;
-            }
-            set
-            {
-                this.textField = value;
-            }
-        }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string href
-        {
-            get
-            {
-                return this.hrefField;
-            }
-            set
-            {
-                this.hrefField = value;
-            }
-        }
-    }
-
-    public class EpicorDetails
-    {
-        public string Namespace { get; set; }
-        public bool useBaseClass { get; set; }
-        public string BaseClass { get; set; }
-        public string APIURL { get; set; }
-        public string Project { get; set; }
     }
 }
