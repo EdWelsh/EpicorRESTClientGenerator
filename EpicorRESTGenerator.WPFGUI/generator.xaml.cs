@@ -167,20 +167,33 @@ namespace EpicorSwaggerRESTGenerator.WPFGUI
             }
             catch (WebException ex)
             {
-                using (WebResponse response = ex.Response)
+                if(ex.Response != null)
                 {
-                    HttpWebResponse httpResponse = (HttpWebResponse)response;
-                    MessageBox.Show(string.Format("Error code: {0}", httpResponse.StatusDescription));
-                    string text = "";
-                    using (Stream data = response.GetResponseStream())
-                    using (var reader = new StreamReader(data))
+                    using (WebResponse response = ex.Response)
                     {
-                        // text is the response body
-                        text = reader.ReadToEnd();
+                        HttpWebResponse httpResponse = (HttpWebResponse)response;
+                        MessageBox.Show(string.Format("Error code: {0}", httpResponse.StatusDescription));
+                        string text = "";
+                        using (Stream data = response.GetResponseStream())
+                        using (var reader = new StreamReader(data))
+                        {
+                            // text is the response body
+                            text = reader.ReadToEnd();
+                        }
+                        MessageBox.Show(text);
+                        return false;
                     }
-                    MessageBox.Show(text);
+                }
+                else
+                {
+                    MessageBox.Show(ex.Message);
                     return false;
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
             }
             return true;
         }
