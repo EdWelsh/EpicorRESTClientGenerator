@@ -94,7 +94,7 @@ namespace EpicorSwaggerRESTGenerator.WPFGUI
         {
             if (!isValid(ERPAPIURLServiceTextBox) || !isvalidURL(ERPAPIURLServiceTextBox.Text)) { MessageBox.Show("Please provide a services URL for the ERP Services", ""); return; }
             if (!isValid(ERPProjectTextBox) || !fileExists(ERPProjectTextBox)) { MessageBox.Show("Please provide the ERP project directory", ""); return; }
-            if (!isValid(ERPAPIURLTextBox) || !isvalidURL(ERPAPIURLTextBox.Text)) { MessageBox.Show("Please provide the ERP API URL", ""); return; }
+            if (!isValid(ERPAPIURLTextBox)) { MessageBox.Show("Please provide the ERP API URL", ""); return; }
             if (ERPServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
             IsEnabled = false;
             services.workspace.collection = services.workspace.collection.Where(o => ERPServiceListBox.SelectedItems.Contains(o.href)).ToArray();
@@ -105,7 +105,7 @@ namespace EpicorSwaggerRESTGenerator.WPFGUI
         {
             if (!isValid(ICEAPIURLServiceTextBox) || !isvalidURL(ICEAPIURLServiceTextBox.Text)) { MessageBox.Show("Please provide a services URL for the ICE Services", ""); return; }
             if (!isValid(ICEProjectTextBox) || !fileExists(ICEProjectTextBox)) { MessageBox.Show("Please provide the ICE project directory", ""); return; }
-            if (!isValid(ICEAPIURLTextBox) || !isvalidURL(ICEAPIURLTextBox.Text)) { MessageBox.Show("Please provide the ICE API URL", ""); return; }
+            if (!isValid(ICEAPIURLTextBox)) { MessageBox.Show("Please provide the ICE API URL", ""); return; }
             if (ICEServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
             IsEnabled = false;
             services.workspace.collection = services.workspace.collection.Where(o => ICEServiceListBox.SelectedItems.Contains(o.href)).ToArray();
@@ -116,7 +116,7 @@ namespace EpicorSwaggerRESTGenerator.WPFGUI
         {
             if (!isValid(BAQAPIURLServiceTextBox) || !isvalidURL(BAQAPIURLServiceTextBox.Text)) { MessageBox.Show("Please provide a services URL for the BAQ Services", ""); return; }
             if (!isValid(BAQProjectTextBox) || !fileExists(BAQProjectTextBox)) { MessageBox.Show("Please provide the BAQ project directory", ""); return; }
-            if (!isValid(BAQAPIURLTextBox) || !isvalidURL(BAQAPIURLTextBox.Text)) { MessageBox.Show("Please provide the BAQ API URL", ""); return; }
+            if (!isValid(BAQAPIURLTextBox)) { MessageBox.Show("Please provide the BAQ API URL", ""); return; }
             if (BAQServiceListBox.SelectedItems.Count == 0) { MessageBox.Show("Please select the service you wish to generate a client for!", ""); return; }
             IsEnabled = false;
             services.workspace.collection = services.workspace.collection.Where(o => BAQServiceListBox.SelectedItems.Contains(o.href)).ToArray();
