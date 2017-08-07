@@ -143,7 +143,7 @@ namespace EpicorSwaggerRESTGenerator.Models
         {
             using (var collection = new Microsoft.Build.Evaluation.ProjectCollection())
             {
-                collection.LoadProject(projectFile);
+                collection.LoadProject(projectFile, "14.0");
                 var project = collection.LoadedProjects.FirstOrDefault(o => o.FullPath == projectFile);
                 var items = project.GetItems("Compile");
                 if (!items.Any(o => o.EvaluatedInclude == filename || o.UnevaluatedInclude == filename))
