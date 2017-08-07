@@ -78,7 +78,15 @@ namespace EpicorSwaggerRESTGenerator.Models
                         {
                             foreach (var j in jsonObj["paths"])
                             {
-                                j.First["post"]["operationId"] = j.Name.Replace(@"\", "").Replace("/", "");
+                                var post = j.First["post"];
+                                if (post != null)
+                                {
+                                    var postOpID = j.First["post"]["operationId"];
+                                    if (postOpID != null)
+                                    {
+                                        j.First["post"]["operationId"] = j.Name.Replace(@"\", "").Replace("/", "");
+                                    }
+                                }
                             }
                         }
 
