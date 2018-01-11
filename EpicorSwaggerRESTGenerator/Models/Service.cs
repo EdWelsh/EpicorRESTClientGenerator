@@ -17,9 +17,7 @@ namespace EpicorSwaggerRESTGenerator.Models
     public partial class service
     {
         private serviceWorkspace workspaceField;
-
         private string baseField;
-
         /// <remarks/>
         public serviceWorkspace workspace
         {
@@ -32,7 +30,6 @@ namespace EpicorSwaggerRESTGenerator.Models
                 this.workspaceField = value;
             }
         }
-
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
         public string @base
@@ -46,7 +43,6 @@ namespace EpicorSwaggerRESTGenerator.Models
                 this.baseField = value;
             }
         }
-
         public static service getServices(string serviceURL, EpicorDetails details)
         {
             using (WebClient client = Client.getWebClient(string.IsNullOrEmpty(details.Username)?"":details.Username, string.IsNullOrEmpty(details.Password) ? "" : details.Password))
@@ -61,7 +57,6 @@ namespace EpicorSwaggerRESTGenerator.Models
                 return services;
             }
         }
-
         public static async Task<bool> generateCode(service services, EpicorDetails details)
         {
             using (WebClient client = Client.getWebClient(string.IsNullOrEmpty(details.Username) ? "" : details.Username, string.IsNullOrEmpty(details.Password) ? "" : details.Password))
@@ -98,7 +93,7 @@ namespace EpicorSwaggerRESTGenerator.Models
                         if (details.useBaseClass) generator.Settings.ClientBaseClass = details.BaseClass;
                         generator.Settings.UseHttpClientCreationMethod = true;
                         generator.Settings.AdditionalNamespaceUsages = new[] { "Newtonsoft.Json", "Newtonsoft.Json.Linq" };
-                        generator.Settings.GenerateSyncMethods = false;
+                        generator.Settings.GenerateSyncMethods = true;
 
                         var code = generator.GenerateFile();
                         code = code
@@ -124,8 +119,11 @@ namespace EpicorSwaggerRESTGenerator.Models
                             //I dont like the required attribute, changed to allow nulls
                             .Replace(", Required = Newtonsoft.Json.Required.Always)]", ", Required = Newtonsoft.Json.Required.AllowNull)]")
                             .Replace("[System.ComponentModel.DataAnnotations.Required]", "");
+                            //.Replace(@"private string _baseUrl =","//")
+                            //.Replace("get { return _baseUrl; }", "get;")
+                            //.Replace("set { _baseUrl = value; }", "set;");
 
-                        addReference(details.Project, service.href + ".cs");
+                        //addReference(details.Project, service.href + ".cs");
                         File.WriteAllText(Path.GetDirectoryName(details.Project) + "\\" + service.href + ".cs", code);
                     }
                     catch (Exception ex)
@@ -143,7 +141,7 @@ namespace EpicorSwaggerRESTGenerator.Models
         {
             using (var collection = new Microsoft.Build.Evaluation.ProjectCollection())
             {
-                collection.LoadProject(projectFile, "14.0");
+                collection.LoadProject(projectFile);
                 var project = collection.LoadedProjects.FirstOrDefault(o => o.FullPath == projectFile);
                 var items = project.GetItems("Compile");
                 if (!items.Any(o => o.EvaluatedInclude == filename || o.UnevaluatedInclude == filename))
