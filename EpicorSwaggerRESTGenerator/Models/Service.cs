@@ -45,7 +45,7 @@ namespace EpicorSwaggerRESTGenerator.Models
         }
         public static service getServices(string serviceURL, EpicorDetails details)
         {
-            using (WebClient client = Client.getWebClient(string.IsNullOrEmpty(details.Username)?"":details.Username, string.IsNullOrEmpty(details.Password) ? "" : details.Password))
+            using (WebClient client = Client.getWebClient(string.IsNullOrEmpty(details.Username) ? "" : details.Username, string.IsNullOrEmpty(details.Password) ? "" : details.Password))
             {
                 service services = new service();
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(service));
@@ -118,11 +118,11 @@ namespace EpicorSwaggerRESTGenerator.Models
                             .Replace("public System.Collections.Generic.IDictionary<string, string> AdditionalProperties", " public System.Collections.Generic.IDictionary<string, JToken> AdditionalProperties")
                             //I dont like the required attribute, changed to allow nulls
                             .Replace(", Required = Newtonsoft.Json.Required.Always)]", ", Required = Newtonsoft.Json.Required.AllowNull)]")
-                            .Replace("[System.ComponentModel.DataAnnotations.Required]", "");
-                            //.Replace(@"private string _baseUrl =","//")
-                            //.Replace("get { return _baseUrl; }", "get;")
-                            //.Replace("set { _baseUrl = value; }", "set;");
-
+                            .Replace("[System.ComponentModel.DataAnnotations.Required]", "")
+                            .Replace(@"public string BaseUrl", "public new string BaseUrl")
+                        //.Replace("get { return _baseUrl; }", "get;")
+                        //.Replace("set { _baseUrl = value; }", "set;");
+                        ;
                         //addReference(details.Project, service.href + ".cs");
                         File.WriteAllText(Path.GetDirectoryName(details.Project) + "\\" + service.href + ".cs", code);
                     }
